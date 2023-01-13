@@ -1,67 +1,68 @@
-import React, { Component } from 'react';
 import css from './ContactForm.module.css';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as yup from 'yup';
+import notify from 'utils/alert';
+const ContactForm = ({ onSubmit }) => {
+  let scima = yup.object().shape({
+    name: yup
+      .string()
+      .matches(/^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/),
+    number: yup
+      .string()
+      .matches(
+        /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/
+      ),
+  });
 
-class ContactForm extends Component {
-  state = {
+  const initialValues = {
     name: '',
     number: '',
   };
 
-  handleChange = event => {
-    const { name, value } = event.target;
-    this.setState({ [name]: value });
+  const handleSubmit = (values, { resetForm }) => {
+    onSubmit(values);
+    resetForm();
   };
 
-  handleSubmit = event => {
-    event.preventDefault();
-    const { onSubmit } = this.props;
-    onSubmit(this.state);
-    this.reset();
-  };
-  reset = () => {
-    this.setState({
-      name: '',
-      number: '',
-    });
-  };
-  render() {
-    const { name, number } = this.state;
-
-    return (
-      <form className={css.contactForm} onSubmit={this.handleSubmit}>
+  return (
+    <Formik
+      initialValues={initialValues}
+      validationSchema={scima}
+      onSubmit={handleSubmit}
+    >
+      <Form className={css.contactForm}>
         <label className={css.contactFormLabel}>
           <span className={css.contactFormLabelText}>Name:</span>
-          <input
+          <Field
             className={css.contactFormInput}
             type="text"
             name="name"
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+            // pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+            // title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
             placeholder="First and last name"
-            value={name}
-            onChange={this.handleChange}
           />
+          <ErrorMessage component={notify('warning-name')} name="name" />
         </label>
         <label className={css.contactFormLabel}>
           <span className={css.contactFormLabelText}>Number:</span>
-          <input
+          <Field
             className={css.contactFormInput}
             type="tel"
             name="number"
-            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+            // pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+            // title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
             placeholder="Phone number"
-            value={number}
-            onChange={this.handleChange}
           />
+          <ErrorMessage component={notify('warning-name')} name="number" />
         </label>
         <button className={css.contactFormBtn} type="submit">
           Add contact
         </button>
-      </form>
-    );
-  }
-}
+      </Form>
+    </Formik>
+  );
+};
+
 export default ContactForm;

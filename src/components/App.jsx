@@ -6,6 +6,7 @@ import ContactForm from './ContactForm';
 import ContactList from './ContactList';
 import Filter from './Filter';
 import Natification from './Natification';
+import { ToastContainer } from 'react-toastify';
 
 class App extends Component {
   state = {
@@ -95,6 +96,7 @@ class App extends Component {
             ></ContactList>
           )}
         </Section>
+        <ToastContainer />
       </div>
     );
   }
