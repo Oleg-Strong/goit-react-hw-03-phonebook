@@ -9,6 +9,7 @@
 }
 
 .contactFormLabel {
+  position: relative;
   display: flex;
   justify-content: space-between;
   gap: 10px;
@@ -49,4 +50,18 @@
 .contactFormBtn:focus,
 .contactFormBtn:hover {
   background-color: rgb(234, 210, 24);
+}
+.erorr {
+  position: absolute;
+  font-size: 18px;
+
+  top: 0;
+  left: 0;
+
+  transform: translate(320px, 20%);
+
+  color: #ffffff;
+  text-shadow: 0 0 5px rgb(252, 5, 5), 0 0 10px rgb(252, 5, 5),
+    0 0 15px rgb(252, 5, 5), 0 0 20px rgb(252, 5, 5), 0 0 30px rgb(252, 5, 5),
+    0 0 40px rgb(252, 5, 5), 0 0 55px rgb(252, 5, 5), 0 0 75px rgb(252, 5, 5);
 }

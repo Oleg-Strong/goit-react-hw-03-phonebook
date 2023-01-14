@@ -6,7 +6,8 @@ import ContactForm from './ContactForm';
 import ContactList from './ContactList';
 import Filter from './Filter';
 import Natification from './Natification';
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 class App extends Component {
   state = {
@@ -26,7 +27,19 @@ class App extends Component {
       ({ number }) => number.split('-').join('') === normalazetNumber
     );
     if (existingName || existingNumber) {
-      alert(`${existingNumber ? number : name} is already in contacts!!!`);
+      toast.warn(
+        `${existingNumber ? number : name} is already in contacts!!!`,
+        {
+          position: 'top-center',
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+          theme: 'colored',
+        }
+      );
       return;
     }
     this.addContact(contact);

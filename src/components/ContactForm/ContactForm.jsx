@@ -1,17 +1,19 @@
 import css from './ContactForm.module.css';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
-import notify from 'utils/alert';
+import 'yup-phone';
+import PropTypes from 'prop-types';
+
 const ContactForm = ({ onSubmit }) => {
   let scima = yup.object().shape({
     name: yup
       .string()
-      .matches(/^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/),
-    number: yup
-      .string()
       .matches(
-        /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/
-      ),
+        /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/,
+        'name is not valid'
+      )
+      .required('name field is required'),
+    number: yup.string().required('number field is required').phone('UA'),
   });
 
   const initialValues = {
@@ -37,12 +39,12 @@ const ContactForm = ({ onSubmit }) => {
             className={css.contactFormInput}
             type="text"
             name="name"
-            // pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            // title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
             placeholder="First and last name"
           />
-          <ErrorMessage component={notify('warning-name')} name="name" />
+          <ErrorMessage name="name">
+            {errMsg => <div className={css.erorr}>{errMsg}</div>}
+          </ErrorMessage>
         </label>
         <label className={css.contactFormLabel}>
           <span className={css.contactFormLabelText}>Number:</span>
@@ -50,12 +52,12 @@ const ContactForm = ({ onSubmit }) => {
             className={css.contactFormInput}
             type="tel"
             name="number"
-            // pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-            // title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
             placeholder="Phone number"
           />
-          <ErrorMessage component={notify('warning-name')} name="number" />
+          <ErrorMessage name="number">
+            {errMsg => <div className={css.erorr}>{errMsg}</div>}
+          </ErrorMessage>
         </label>
         <button className={css.contactFormBtn} type="submit">
           Add contact
@@ -66,3 +68,7 @@ const ContactForm = ({ onSubmit }) => {
 };
 
 export default ContactForm;
+
+ContactForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};
