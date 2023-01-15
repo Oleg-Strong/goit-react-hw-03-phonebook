@@ -13,7 +13,10 @@ const ContactForm = ({ onSubmit }) => {
         'name is not valid'
       )
       .required('name field is required'),
-    number: yup.string().required('number field is required').phone('UA'),
+    number: yup
+      .string()
+      .required('number field is required')
+      .phone('UA', true, 'enter the number in the format +380(**)-***-**-**'),
   });
 
   const initialValues = {
